@@ -1,3 +1,4 @@
+const Api = require("./api");
 const Config = require("./config.js");
 const Discord = require("discord.js");
 const Secrets = require("./secrets.js");
@@ -40,6 +41,10 @@ function askToPlay(message, shouldNotify) {
   return message.channel.send(notifyAll(`Who wants to play some ${gamesText}?`, shouldNotify));
 }
 
+function pubgStatBlock(stat) {
+  return `* ${stat.label}: ${stat.displayValue} - ${stat.percentile}${stat.rank ? ` - ${stat.rank}` : ""}\n`;
+}
+
 
 ////////////////////////// Commands //////////////////////////
 
@@ -57,12 +62,50 @@ function letsplay(message) {
     })
 }
 
+async function pubg(message) {
+  const args = message.content.split(" ").slice(1);
+  const nickname = args[0];
+  if (!nickname) return message.channel.send("Please specify the **garbage** player's PUBG name");
+
+  const result = await Api.pubgProfile(nickname);
+  const match = args[1] || Config.PUBG_DEFAULT_MATCH;
+  const region = args[2] || Config.PUBG_DEFAULT_REGION;
+  const gameModeStats = result.Stats.filter(stat => {
+    return stat.Region.toUpperCase() === region.toUpperCase() && stat.Match.toUpperCase() === match.toUpperCase();
+  });
+
+  let profileInfo = (
+`\`\`\`
+Name: ${result.PlayerName}
+Last Updated: ${new Date(result.LastUpdated).toDateString()}
+Region: ${region.toUpperCase()}
+(Name, Percentile, Rank)
+
+`
+  );
+
+  if (gameModeStats.length === 0) {
+    return message.reply(`Sorry, I couldn't find any stats for \`${nickname}\` in \`${region}\` for the game type \`${match}\``);
+  }
+
+  gameModeStats.forEach(gameMode => {
+    gameMode.Stats.forEach(stat => {
+      profileInfo += `${pubgStatBlock(stat)}`;
+    });
+  });
+  profileInfo += "\n```";
+
+  message.channel.send(profileInfo);
+}
+
 function handleCommand(message) {
   const command = message.content.substring(1).split(" ")[0];
   if (command === "mh") {
     mh(message);
   } else if (command === "letsplay") {
     letsplay(message);
+  } else if (command === "pubg") {
+    pubg(message);
   }
 }
 
@@ -80,4 +123,4 @@ bot.on("guildMemberAdd", member => {
   member.guild.defaultChannel.send(`Welcome to Weeknight Radio with Josh, ${member}! Hope you enjoy your stay.`);
 });
 
-bot.login(Secrets.Token);
+bot.login(Secrets.DISCORD_TOKEN);

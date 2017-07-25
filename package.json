@@ -23,6 +23,7 @@
   "homepage": "https://github.com/knazir/RadioBot#readme",
   "dependencies": {
     "discord.js": "^11.1.0",
+    "node-fetch": "^1.7.1",
     "nodemon": "^1.11.0"
   }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "radiobot",
+  "version": "1.0.0",
+  "description": "A Discord bot for Week Night Radio With Josh",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knazir/RadioBot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Kashif Nazir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/knazir/RadioBot/issues"
+  },
+  "homepage": "https://github.com/knazir/RadioBot#readme",
+  "dependencies": {
+    "discord.js": "^11.1.0",
+    "nodemon": "^1.11.0"
+  }
+}

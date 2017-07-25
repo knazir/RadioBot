@@ -1,4 +1,4 @@
-GAEMS = "@everyone WHO WANTS TO PLAY SOME VIDYA GAEMS?"
+GAMES = "@everyone WHO WANTS TO PLAY SOME VIDYA GAEMS?"
 
 LIST_GAMES = """Here are some games we play:
 ```

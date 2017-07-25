@@ -16,7 +16,7 @@ async def hello(*args):
 
 @radio_bot.command()
 async def letsplay(*args):
-    return await radio_bot.say(GAEMS)
+    return await radio_bot.say(GAMES)
 
 @radio_bot.command()
 async def games(*args):

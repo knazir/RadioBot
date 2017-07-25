@@ -74,15 +74,13 @@ async function pubg(message) {
     return stat.Region.toUpperCase() === region.toUpperCase() && stat.Match.toUpperCase() === match.toUpperCase();
   });
 
-  let profileInfo = (
-`\`\`\`
-Name: ${result.PlayerName}
-Last Updated: ${new Date(result.LastUpdated).toDateString()}
-Region: ${region.toUpperCase()}
-(Name, Percentile, Rank)
-
-`
-  );
+  let profileInfo = (`\`\`\`
+    Name: ${result.PlayerName}
+    Last Updated: ${new Date(result.LastUpdated).toDateString()}
+    Region: ${region.toUpperCase()}
+    (Name, Percentile, Rank)
+    
+    `).split("\n").map(line => line.trim()).join("\n");
 
   if (gameModeStats.length === 0) {
     return message.reply(`Sorry, I couldn't find any stats for \`${nickname}\` in \`${region}\` for the game type \`${match}\``);

@@ -3,6 +3,6 @@ module.exports = {
   OPTION_PREFIX: "--",
   MH_ID: "2024",
 
-  PUBG_DEFAULT_REGION: "na",
-  PUBG_DEFAULT_MATCH: "squad"
+  PUBG_DEFAULT_REGION: "NA",
+  PUBG_DEFAULT_MATCH: "Solo"
 };

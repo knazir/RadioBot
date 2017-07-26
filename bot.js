@@ -2,6 +2,7 @@ const Api = require("./api");
 const Config = require("./config.js");
 const Discord = require("discord.js");
 const Secrets = require("./secrets.js");
+const table = require("text-table");
 
 const bot = new Discord.Client();
 
@@ -41,8 +42,8 @@ function askToPlay(message, shouldNotify) {
   return message.channel.send(notifyAll(`Who wants to play some ${gamesText}?`, shouldNotify));
 }
 
-function pubgStatBlock(stat) {
-  return `* ${stat.label}: ${stat.displayValue} - ${stat.percentile}${stat.rank ? ` - ${stat.rank}` : ""}\n`;
+function pubgStatRow(stat) {
+  return [stat.label, stat.displayValue, stat.percentile, stat.rank || ""];
 }
 
 
@@ -65,7 +66,7 @@ function letsplay(message) {
 async function pubg(message) {
   const args = message.content.split(" ").slice(1);
   const nickname = args[0];
-  if (!nickname) return message.channel.send("Please specify the **garbage** player's PUBG name");
+  if (!nickname) return message.channel.send(`Please specify the **garbage** player's PUBG name: \`${Config.COMMAND_PREFIX}pubg <name> <mode> <region>\``);
 
   const result = await Api.pubgProfile(nickname);
   const match = args[1] || Config.PUBG_DEFAULT_MATCH;
@@ -74,26 +75,23 @@ async function pubg(message) {
     return stat.Region.toUpperCase() === region.toUpperCase() && stat.Match.toUpperCase() === match.toUpperCase();
   });
 
+  if (gameModeStats.length === 0) {
+    return message.reply(`sorry, I couldn't find any stats for \`${nickname}\` in \`${region}\` for the game type \`${match}\``);
+  }
+
   let profileInfo = (`\`\`\`
     Name: ${result.PlayerName}
     Last Updated: ${new Date(result.LastUpdated).toDateString()}
     Region: ${region.toUpperCase()}
-    (Name, Percentile, Rank)
     
+    (Name, Percentile, Rank)
     `).split("\n").map(line => line.trim()).join("\n");
 
-  if (gameModeStats.length === 0) {
-    return message.reply(`Sorry, I couldn't find any stats for \`${nickname}\` in \`${region}\` for the game type \`${match}\``);
-  }
-
-  gameModeStats.forEach(gameMode => {
-    gameMode.Stats.forEach(stat => {
-      profileInfo += `${pubgStatBlock(stat)}`;
-    });
-  });
+  profileInfo += table(gameModeStats[0].Stats.map(stat => pubgStatRow(stat)));
   profileInfo += "\n```";
 
-  message.channel.send(profileInfo);
+  message.channel.send(profileInfo)
+    .catch(() => message.reply(`whoops, the message was too long for me to send (${profileInfo.length} characters).`));
 }
 
 function handleCommand(message) {

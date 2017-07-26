@@ -50,9 +50,10 @@ function pubgStatRow(stat) {
 ////////////////////////// Commands //////////////////////////
 
 function mh(message) {
-  const userMap = bot.users.filter(user => user.discriminator === Config.MH_ID);
-  if (userMap.size === 0) return message.channel.send("MH was not found.");
-  userMap.forEach(user => message.channel.send(`MH is **${user.username}#${user.discriminator}**`));
+  message.channel.send("I have absolutely no fucking clue who `MH` is");
+  // const userMap = bot.users.filter(user => user.discriminator === Config.MH_ID);
+  // if (userMap.size === 0) return message.channel.send("MH was not found.");
+  // userMap.forEach(user => message.channel.send(`MH is **${user.username}#${user.discriminator}**`));
 }
 
 function letsplay(message) {
@@ -94,6 +95,10 @@ async function pubg(message) {
     .catch(() => message.reply(`whoops, the message was too long for me to send (${profileInfo.length} characters).`));
 }
 
+function ramsay(message){
+  message.channel.send(Config.RAMSAY_INSULTS[Math.floor(Math.random() * Config.RAMSAY_INSULTS.length)]);
+}
+
 function handleCommand(message) {
   const command = message.content.substring(1).split(" ")[0];
   if (command === "mh") {
@@ -102,6 +107,8 @@ function handleCommand(message) {
     letsplay(message);
   } else if (command === "pubg") {
     pubg(message);
+  } else if (command === "ramsay") {
+    ramsay(message);
   }
 }
 
@@ -109,9 +116,17 @@ bot.on("ready", () => {
   console.log(`Logged in as ${bot.user.tag}!`);
 });
 
-bot.on("message", msg => {
-  if (msg.content.startsWith(Config.COMMAND_PREFIX)) {
-    handleCommand(msg);
+bot.on("message", message => {
+  if (message.content.startsWith(Config.COMMAND_PREFIX)) {
+    handleCommand(message);
+  } else if (/a+y+/i.test(message.content)) {
+    let lmao = "lma";
+    const ys = message.content.substring(message.content.indexOf("y"));
+    for (let i = 0; i < ys.length; i++) {
+      if (ys[i] === ys[i].toUpperCase()) lmao += "O";
+      else lmao += "o";
+    }
+    message.channel.send(lmao);
   }
 });
 

@@ -8,6 +8,10 @@ const bot = new Discord.Client();
 
 ////////////////////////// Helpers //////////////////////////
 
+function userTag(userId) {
+  return `<@${userId}>`;
+}
+
 function optionPresent(content, optionName) {
   return content.indexOf(`${Config.OPTION_PREFIX}${optionName}`) !== -1;
 }
@@ -51,7 +55,7 @@ function pubgStatRow(stat) {
 
 function mh(message) {
   message.channel.send("I have absolutely no fucking clue who `MH` is");
-  // const userMap = bot.users.filter(user => user.discriminator === Config.MH_ID);
+  // const userMap = bot.users.filter(user => user.discriminator === Config.MH_DISCRIMINATOR);
   // if (userMap.size === 0) return message.channel.send("MH was not found.");
   // userMap.forEach(user => message.channel.send(`MH is **${user.username}#${user.discriminator}**`));
 }
@@ -96,7 +100,10 @@ async function pubg(message) {
 }
 
 function ramsay(message){
-  message.channel.send(Config.RAMSAY_INSULTS[Math.floor(Math.random() * Config.RAMSAY_INSULTS.length)]);
+  const toMH = optionPresent(message.content, "mh");
+  const insult = Config.RAMSAY_INSULTS[Math.floor(Math.random() * Config.RAMSAY_INSULTS.length)];
+  const response = `${toMH ? `${userTag(Config.MH_ID)} ` : ""}${insult}`;
+  message.channel.send(response);
 }
 
 function handleCommand(message) {
@@ -119,7 +126,7 @@ bot.on("ready", () => {
 bot.on("message", message => {
   if (message.content.startsWith(Config.COMMAND_PREFIX)) {
     handleCommand(message);
-  } else if (/a+y+/i.test(message.content)) {
+  } else if (/^a+y+$/i.test(message.content)) {
     let lmao = "lma";
     const ys = message.content.substring(message.content.indexOf("y"));
     for (let i = 0; i < ys.length; i++) {

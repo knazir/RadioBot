@@ -16,6 +16,10 @@ function optionPresent(content, optionName) {
   return content.indexOf(`${Config.OPTION_PREFIX}${optionName}`) !== -1;
 }
 
+function containsWord(word, content) {
+  return content.toLowerCase().split(" ").indexOf(word) !== -1;
+}
+
 // TODO: Figure out why it replaces all text after a match
 function cleanOptions(content) {
   return content.replace(new RegExp(`${Config.OPTION_PREFIX}.+`, "g"), "").replace(/\s\s+/g, " ").trim();
@@ -29,6 +33,9 @@ function askToPlay(message, shouldNotify) {
   let games = message.content.split(" ").slice(shouldNotify ? 1 : 2);
   const argString = games.join(" ");
   if (games.length === 0 || argString.indexOf(",") !== -1) games = argString.split(",").map(game => game.trim());
+
+  // Get rid of empty strings
+  games = games.filter(game => game);
 
   if (games.length === 0) return message.channel.send(notifyAll("Who wants to play some vidya gaems!?", shouldNotify));
   if (games.length > 9) return message.reply("That's way too many games...");
@@ -106,6 +113,34 @@ function ramsay(message){
   message.channel.send(response);
 }
 
+function rage(message) {
+  message.channel.send("FUCK THIS GAME AND EVERYTHING IT STANDS FOR");
+}
+
+function overlord(message) {
+  message.channel.send("Our lord and savior, Radio DJ <@90599323728900096>");
+}
+
+
+////////////////////////// Text Processing //////////////////////////
+
+function ayy(message) {
+  let lmao = "lma";
+  const ys = message.content.substring(message.content.indexOf("y"));
+  for (let i = 0; i < ys.length; i++) {
+    if (ys[i] === ys[i].toUpperCase()) lmao += "O";
+    else lmao += "o";
+  }
+  message.channel.send(lmao);
+}
+
+function lit(message) {
+  message.react("🔥");
+}
+
+
+////////////////////////// Main //////////////////////////
+
 function handleCommand(message) {
   const command = message.content.substring(1).split(" ")[0];
   if (command === "mh") {
@@ -116,6 +151,10 @@ function handleCommand(message) {
     pubg(message);
   } else if (command === "ramsay") {
     ramsay(message);
+  } else if (command === "rage") {
+    rage(message);
+  } else if (command === "overlord") {
+    overlord(message);
   }
 }
 
@@ -134,6 +173,9 @@ bot.on("message", message => {
       else lmao += "o";
     }
     message.channel.send(lmao);
+    ayy(message);
+  } else if (containsWord("lit", message.content) || containsWord("fire", message.content)) {
+    lit(message);
   }
 });
 

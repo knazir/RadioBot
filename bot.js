@@ -1,7 +1,8 @@
+require("dotenv").config();
+
 const Api = require("./api");
 const Config = require("./config.js");
 const Discord = require("discord.js");
-const Secrets = require("./secrets.js");
 const table = require("text-table");
 
 const bot = new Discord.Client();
@@ -183,4 +184,4 @@ bot.on("guildMemberAdd", member => {
   member.guild.defaultChannel.send(`Welcome to Weeknight Radio with Josh, ${member}! Hope you enjoy your stay.`);
 });
 
-bot.login(Secrets.DISCORD_TOKEN);
+bot.login(process.env.DISCORD_TOKEN);

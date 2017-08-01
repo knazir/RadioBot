@@ -1,4 +1,3 @@
-const Secrets = require("./secrets");
 const fetch = require("node-fetch");
 
 class Api {
@@ -22,7 +21,7 @@ class Api {
   }
 
   static pubgProfile(nickname) {
-    return this._get(`https://pubgtracker.com/api/profile/pc/${nickname}`, {"TRN-API-KEY": Secrets.PUBG_TRACKER_TOKEN});
+    return this._get(`https://pubgtracker.com/api/profile/pc/${nickname}`, {"TRN-API-KEY": process.env.PUBG_TRACKER_TOKEN});
   }
 }
 

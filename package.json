@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "discord.js": "^11.1.0",
+    "dotenv": "^4.0.0",
     "node-fetch": "^1.7.1",
     "nodemon": "^1.11.0",
     "text-table": "^0.2.0"

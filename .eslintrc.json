@@ -1,0 +1,30 @@
+{
+  "env": { "browser": true },
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true }
+  },
+
+  "plugins": [
+    "standard",
+    "promise"
+  ],
+
+  "extends": [
+    "eslint:recommended",
+    "standard"
+  ],
+
+  "rules": {
+    "no-new": "off",
+    "no-return-assign": "off",
+    "no-var": "error",
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "no-console": "off",
+
+    "indent": "off",
+    "space-before-function-paren": "off",
+    "spaced-comment": "off"
+  }
+}

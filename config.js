@@ -1,29 +1,49 @@
-module.exports = {
+const config = {
+  // guild
+  GUILD_NAME: "Weeknight Radio with Josh",
+
+  // database
+  DATABASE_NAME: "bot-db",
+
+  // commands
   COMMAND_PREFIX: "?",
   OPTION_PREFIX: "--",
-  MH_ID: "219988011822219264",
-  MH_DISCRIMINATOR: "2024",
-  OVERLORD_ID: "90599323728900096",
 
-  PUBG_DEFAULT_REGION: "NA",
-  PUBG_DEFAULT_MATCH: "Solo",
+  // logging
+  LOGGING: {
+    PURGE: "purge",
+    WARN: "warn"
+  },
 
-  RAMSAY_INSULTS: [
-    "Now fuck off you fat useless sack of fucking yankee doodle dandy shite. Fuck off will ya.",
-    "Fuck me? Madame, how about fuck you",
-    "My gran could do better! And she's dead!",
-    "AN IDIOT SANDWICH WHAT?",
-    "Right I'll get you more pumpkin; I'll ram it right up your fucking arse. Would you like it whole or diced?",
-    "I wish you'd jump in the oven. That would make my life a lot easier!",
-    "You fucking DONKEY",
-    "Like a bison's penis. What is that shit?",
-    "How about a thank you, you miserable wee bitch",
-    "You seriously surprise me... you surprise me, how shit you are",
-    "FUCK OFF FUCK OFF FUCK OFF FUCK OFF",
-    "YOU CAN'T COUNT TO FUCKING TWO",
-    "You give me them anemic bits of shit, I'll fucking throw them up your ass sideways",
-    "You deserve a kick in the nuts",
-    "You look like you're just about to lose your virginity",
-    "YOU'RE A FUCKING DISGRACE"
-  ]
+  // media
+  WELCOME_BG_IMG_URL: null,
+
+  // warnings
+  MAX_WARNINGS: 3,
+
+  // roles
+  ADMIN_ROLES: ["Radio DJ", "Music Technician"],
+
+  // channels
+  WELCOME_CHANNEL_ID: "163130669701136385",
+  GOODBYE_CHANNEL_ID: "163130669701136385",
+  AFK_CHANNEL_ID: "163131330022866946",
+  TEST_CHANNEL_ID: "462733772618596362",
+
+  // welcome and goodbye
+  WELCOME_MESSAGE: "Welcome to **Cleanse**! Please tag one of the _Mistress or Royalty_ members with your in-game " +
+  "name using the **@** symbol to receive access!",
+  GOODBYE_MESSAGES: ["Cya nerd. :^)", "Later loser.", "Don't let the door hit you on the way out!", "Bye."],
+
+  // misc
+  STATUS: "online",
+  ACTIVITY_MESSAGE: "You're Done",
+  USER_ID_REGEX: /<@[^>]+>/,
+  MH: {
+    ID: "219988011822219264",
+    DISCRIMINATOR: "2024",
+    VOICE_LOCKED: false
+  }
 };
+
+module.exports = config;

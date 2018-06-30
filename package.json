@@ -1,11 +1,12 @@
 {
   "name": "radiobot",
   "version": "1.0.0",
-  "description": "A Discord bot for Week Night Radio With Josh",
+  "description": "A custom Discord bot for Weeknight Radio with Josh",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon bot.js"
+    "start": "nodemon bot.js",
+    "lint": "eslint --ext .js . || true",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -15,20 +16,25 @@
     "discord",
     "bot"
   ],
-  "author": "Kashif Nazir",
+  "author": "Kashif Nazir (knazir)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/knazir/RadioBot/issues"
   },
   "homepage": "https://github.com/knazir/RadioBot#readme",
-  "engines": {
-    "node": "8.0.0"
-  },
   "dependencies": {
-    "discord.js": "^11.1.0",
-    "dotenv": "^4.0.0",
-    "node-fetch": "^1.7.1",
-    "nodemon": "^1.11.0",
-    "text-table": "^0.2.0"
+    "discord.js": "^11.3.0",
+    "dotenv": "^5.0.0",
+    "mongodb": "^2.2.33",
+    "node-fetch": "^2.0.0",
+    "nodemon": "^1.14.12"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }

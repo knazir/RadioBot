@@ -167,7 +167,8 @@ function mh(message) {
 
 function handleMHVoiceJoin(oldMember, newMember) {
   const newVoiceChannel = newMember.voiceChannel;
-  const shouldMove = newVoiceChannel && isMH(newMember) && config.MH.VOICE_LOCKED;
+  const shouldMove = newVoiceChannel && isMH(newMember) && newVoiceChannel.id !== config.AFK_CHANNEL_ID
+    && config.MH.VOICE_LOCKED;
   if (shouldMove) moveToVoiceChannel(newMember, config.AFK_CHANNEL_ID);
 }
 

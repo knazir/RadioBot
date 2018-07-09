@@ -28,7 +28,7 @@
     "mongodb": "^2.2.33",
     "node-fetch": "^2.0.0",
     "nodemon": "^1.17.5",
-    "simple-bot-discord": "^1.0.0",
+    "simple-bot-discord": "^1.1.0",
     "util": "^0.11.0"
   },
   "devDependencies": {

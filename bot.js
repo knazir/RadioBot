@@ -8,7 +8,7 @@ const config = require("./config");
 const bot = new Bot({
   name: "RadioBot",
   commandPrefix: "?",
-  activityMessage: "Welcome to the show!",
+  activityMessage: "Welcome to the show",
   discordToken: process.env.DISCORD_TOKEN
 });
 

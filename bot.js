@@ -3,6 +3,7 @@
 require("dotenv").config();
 
 const { Bot, Role } = require("simple-bot-discord");
+const { MongoDb } = require("simple-bot-discord/modules");
 const config = require("./config");
 
 const bot = new Bot({
@@ -11,6 +12,8 @@ const bot = new Bot({
   activityMessage: "Welcome to the show!",
   discordToken: process.env.DISCORD_TOKEN
 });
+
+bot.addModule(new MongoDb({ databaseUrl: process.env.MONGODB_URI }));
 
 //////////////// Roles ////////////////
 

@@ -8,7 +8,7 @@ const config = require("./config");
 const bot = new Bot({
   name: "RadioBot",
   commandPrefix: "?",
-  activityMessage: "Welcome to the show",
+  activityMessage: "Welcome to the show!",
   discordToken: process.env.DISCORD_TOKEN
 });
 
@@ -20,7 +20,7 @@ bot.setRoles({
   aisrCouncil: new Role("AISR Council", "327923960983584768", false)
 });
 
-//////////////// Channels //////////////////////
+//////////////// Channels ////////////////
 
 bot.setChannels({
   welcome: config.CHANNELS.WELCOME,
@@ -49,7 +49,7 @@ bot.addCommand("purge", async message => {
   usage: "<number of messages>"
 });
 
-//////////////// Miscellaneous /////////////////
+//////////////// Miscellaneous ////////////////
 
 bot.addCommand("ping", message => {
   message.reply(`pong! I am currently up and running in ${process.env.NODE_ENV} mode.`)
@@ -63,6 +63,12 @@ bot.addCommand("mh", message => {
   message.channel.send(`MH is **${mh.username}#${mh.discriminator}**`);
 }, {
   description: "Find out what the hell MH has changed his name to now."
+});
+
+bot.addCommand("yohoho", message => {
+  message.channel.send("HE TOOK A BITE OF GUM GUM");
+}, {
+  description: "YA-YO, YA-YO, YA-YO"
 });
 
 //////////////// Event handlers ////////////////

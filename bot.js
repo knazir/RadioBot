@@ -15,6 +15,7 @@ const bot = new Bot({
 
 bot.addModule(new MongoDb({
   databaseUrl: process.env.MONGODB_URI,
+  databaseName: process.env.MONGODB_DATABASE_NAME,
   collections: ["logs"]
 }));
 

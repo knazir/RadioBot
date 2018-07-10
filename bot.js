@@ -13,7 +13,10 @@ const bot = new Bot({
   discordToken: process.env.DISCORD_TOKEN
 });
 
-bot.addModule(new MongoDb({ databaseUrl: process.env.MONGODB_URI }));
+bot.addModule(new MongoDb({
+  databaseUrl: process.env.MONGODB_URI,
+  collections: ["logs"]
+}));
 
 //////////////// Roles ////////////////
 

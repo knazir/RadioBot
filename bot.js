@@ -52,7 +52,8 @@ bot.addCommand("restart", async message => {
   message.channel.send("Successfully restarted!");
 }, {
   description: "Restarts the bot.",
-  requiresRole: bot.roles.musicTechnician
+  requiresRole: bot.roles.musicTechnician,
+  useLogger: true
 });
 
 bot.addCommand("purge", async message => {

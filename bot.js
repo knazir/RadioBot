@@ -4,6 +4,8 @@ require("dotenv").config();
 
 const { Bot, Role } = require("simple-bot-discord");
 const { MongoDb } = require("simple-bot-discord/modules");
+
+const Logger = require("./modules/Logger");
 const config = require("./config");
 
 const bot = new Bot({
@@ -13,10 +15,17 @@ const bot = new Bot({
   discordToken: process.env.DISCORD_TOKEN
 });
 
+//////////////// Modules ////////////////
+
 bot.addModule(new MongoDb({
   databaseUrl: process.env.MONGODB_URI,
   databaseName: process.env.MONGODB_DATABASE_NAME,
   collections: ["logs"]
+}));
+
+bot.addModule(new Logger({
+  logCollection: "logs",
+  auditChannelName: "audit"
 }));
 
 //////////////// Roles ////////////////
@@ -31,7 +40,8 @@ bot.setRoles({
 
 bot.setChannels({
   welcome: config.CHANNELS.WELCOME,
-  goodbye: config.CHANNELS.GOODBYE
+  goodbye: config.CHANNELS.GOODBYE,
+  audit: config.CHANNELS.AUDIT
 });
 
 //////////////// Admin commands ////////////////
@@ -53,7 +63,8 @@ bot.addCommand("purge", async message => {
 }, {
   description: "Removes a given number of messages from the current channel.",
   requiresRole: bot.roles.musicTechnician,
-  usage: "<number of messages>"
+  usage: "<number of messages>",
+  useLogger: true
 });
 
 //////////////// Miscellaneous ////////////////

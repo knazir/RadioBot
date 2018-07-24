@@ -15,35 +15,38 @@ module.exports = class Logger extends Module {
   }
 
   async commandFinished(command, message, bot) {
-    const useLogger = command.options.useLogger;
-    if (!useLogger) return;
+    if (!command.options.useLogger) return;
     const log = {
       user: message.author.toString(),
       channel: message.channel.toString(),
       command: `**${command.key}**`,
       message: message.tokens.length > 0 ? `\`${message.content}\`` : null,
-      time: new Date()
+      time: new Date(),
+      persisted: false
     };
     try {
-      await this._createDatabaseLog(log, command, message, bot);
+      log.persisted = await this._createDatabaseLog(log, bot);
     } catch (err) {
-      console.log(err); // something is wrong with MongoDB, we still want to post to audit channel
+      // something is wrong with MongoDB, we still want to post to audit channel, set persisted to false in case
+      log.persisted = false;
+      console.log(err);
     }
     if (this._auditChannelName) this._postToAuditChannel(log, bot);
   }
 
-  async _createDatabaseLog(log, command, message, bot) {
+  async _createDatabaseLog(log, bot) {
     if (!bot.modules.mongodb) throw new Error("The MongoDB module is not enabled.");
     await bot.modules.mongodb.addToCollection(this._logCollection, log);
-    return log;
+    return true;
   }
 
   _postToAuditChannel(log, bot) {
-    const { user, channel, command, message, time } = log;
+    const { user, channel, command, message, time, persisted } = log;
     const auditEmbed = new RichEmbed().setColor(11191551);
     auditEmbed.addField("User", user);
     auditEmbed.addField("Channel", channel);
     auditEmbed.addField("Command", command);
+    auditEmbed.addField("Persisted to Database", persisted);
     if (message) auditEmbed.addField("Message", message);
     auditEmbed.addField("Time", time.toLocaleString());
     bot.channels[this._auditChannelName].send(auditEmbed);

@@ -63,8 +63,46 @@ bot.addCommand("purge", async message => {
   message.channel.bulkDelete(messages);
 }, {
   description: "Removes a given number of messages from the current channel.",
-  requiresRole: bot.roles.musicTechnician,
   usage: "<number of messages>",
+  requiresRole: bot.roles.musicTechnician,
+  useLogger: true
+});
+
+const env = bot.addCommand("env", message => {
+  message.reply("Please specify which environment variable to get.");
+}, {
+  description: "Allows interacting with environment variables from the current bot instance.",
+  usage: "<get> | <set>",
+  requiresRole: bot.roles.musicTechnician,
+  useLogger: true
+});
+
+env.addSubCommand("get", message => {
+  const variableName = message.tokens[0];
+  if (!variableName) message.reply("Please specify a variable name to get.");
+  else message.reply(`\`${variableName}\` is currently set to ${JSON.stringify(process.env[variableName])}`);
+}, {
+  description: "Gets the current value of an environment variable.",
+  usage: "<variable name>"
+});
+
+env.addSubCommand("set", message => {
+  const [variableName, value] = message.tokens;
+  if (!variableName) {
+    message.reply("Please specify a variable name to set.");
+  } else if (!value) {
+    message.reply(`Please specify a value to set ${variableName} to.`);
+  } else {
+    try {
+      process.env[variableName] = JSON.parse(value);
+    } catch (ignored) {
+      process.env[variableName] = value;
+    }
+    message.reply(`\`${variableName}\` set to ${process.env[variableName]}`);
+  }
+}, {
+  description: "Sets the current value of an environment variable.",
+  usage: "<variable name> <value>",
   useLogger: true
 });
 

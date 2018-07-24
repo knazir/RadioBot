@@ -17,13 +17,6 @@ module.exports = class Logger extends Module {
   async commandFinished(command, message, bot) {
     const useLogger = command.options.useLogger;
     if (!useLogger) return;
-    const log = await this._createDatabaseLog(command, message, bot);
-    if (!this._auditChannelName) return;
-    this._postToAuditChannel(log, bot);
-  }
-
-  async _createDatabaseLog(command, message, bot) {
-    if (!bot.modules.mongodb) throw new Error("The MongoDB module is not enabled.");
     const log = {
       user: message.author.toString(),
       channel: message.channel.toString(),
@@ -31,6 +24,16 @@ module.exports = class Logger extends Module {
       message: message.tokens.length > 0 ? `\`${message.content}\`` : null,
       time: new Date()
     };
+    try {
+      await this._createDatabaseLog(log, command, message, bot);
+    } catch (err) {
+      console.log(err); // something is wrong with MongoDB, we still want to post to audit channel
+    }
+    if (this._auditChannelName) this._postToAuditChannel(log, bot);
+  }
+
+  async _createDatabaseLog(log, command, message, bot) {
+    if (!bot.modules.mongodb) throw new Error("The MongoDB module is not enabled.");
     await bot.modules.mongodb.addToCollection(this._logCollection, log);
     return log;
   }

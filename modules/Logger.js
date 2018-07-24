@@ -45,8 +45,8 @@ module.exports = class Logger extends Module {
     const auditEmbed = new RichEmbed().setColor(11191551);
     auditEmbed.addField("User", user);
     auditEmbed.addField("Channel", channel);
+    auditEmbed.addField("Persisted", persisted);
     auditEmbed.addField("Command", command);
-    auditEmbed.addField("Persisted to Database", persisted);
     if (message) auditEmbed.addField("Message", message);
     auditEmbed.addField("Time", time.toLocaleString());
     bot.channels[this._auditChannelName].send(auditEmbed);

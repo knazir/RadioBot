@@ -11,7 +11,8 @@ const config = require("./config");
 const bot = new Bot({
   name: "RadioBot",
   commandPrefix: "?",
-  activityMessage: "Welcome to the show!",
+  optionsPrefix: "--",
+  activityMessage: "Hello Nathaniel",
   discordToken: process.env.DISCORD_TOKEN
 });
 
@@ -20,7 +21,7 @@ const bot = new Bot({
 bot.addModule(new MongoDb({
   databaseUrl: process.env.MONGODB_URI,
   databaseName: process.env.MONGODB_DATABASE_NAME,
-  collections: ["logs"]
+  collections: ["logs", "config"]
 }));
 
 bot.addModule(new Logger({
@@ -31,9 +32,9 @@ bot.addModule(new Logger({
 //////////////// Roles ////////////////
 
 bot.setRoles({
-  radioDj: new Role("Radio DJ", "166688942819639296", true),
-  musicTechnician: new Role("Music Technician", "235088799074484224", true),
-  aisrCouncil: new Role("AISR Council", "327923960983584768", false)
+  radioDj: new Role("Radio DJ", config.ROLES.RADIO_DJ, true),
+  musicTechnician: new Role("Music Technician", config.ROLES.MUSIC_TECHNICIAN, true),
+  aisrCouncil: new Role("AISR Council", config.ROLES.AISR_COUNCIL, false)
 });
 
 //////////////// Channels ////////////////
@@ -43,6 +44,10 @@ bot.setChannels({
   goodbye: config.CHANNELS.GOODBYE,
   audit: config.CHANNELS.AUDIT
 });
+
+//////////////// Data structures ////////////////
+
+const intervals = new Set();
 
 //////////////// Admin commands ////////////////
 
@@ -109,7 +114,7 @@ env.addSubCommand("set", message => {
 //////////////// Miscellaneous ////////////////
 
 bot.addCommand("ping", message => {
-  message.reply(`pong! I am currently up and running in ${process.env.NODE_ENV} mode.`)
+  message.reply(`pong! I am currently up and running in ${process.env.NODE_ENV} mode.`);
 }, {
   description: "Checks whether the bot is online and what mode it is running in."
 });
@@ -126,6 +131,33 @@ bot.addCommand("yohoho", message => {
   message.channel.send("HE TOOK A BITE OF GUM GUM");
 }, {
   description: "YA-YO, YA-YO, YA-YO"
+});
+
+bot.addCommand("spam", async message => {
+  if (message.tokens.length === 0) return message.reply("Please specify a message.");
+  const interval = message.options.interval || config.SPAM_DEFAULT_INTERVAL;
+  const maxCount = message.options.count || config.SPAM_DEFAULT_COUNT;
+  const messageToSpam = message.tokens.join(" ");
+  let count = 0;
+  if (message.options.secret) {
+    const messagesToDelete = await message.channel.fetchMessages({ limit: 1 });
+    message.channel.bulkDelete(messagesToDelete);
+  }
+  const intervalId = setInterval(() => {
+    if (count >= maxCount || !intervals.has(intervalId)) return clearInterval(intervalId);
+    message.channel.send(messageToSpam);
+    count++;
+  }, interval);
+  intervals.add(intervalId);
+}, {
+  description: "Spam a message",
+  usage: "<message> --count=<number> --interval=<delay> --secret?",
+  requiresRole: bot.roles.musicTechnician
+});
+
+bot.addCommand("clearSpamJobs", message => {
+  for (const id of intervals) clearInterval(id);
+  message.reply("Cleared!");
 });
 
 //////////////// Event handlers ////////////////

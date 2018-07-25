@@ -29,7 +29,7 @@ module.exports = class Logger extends Module {
     } catch (err) {
       // something is wrong with MongoDB, we still want to post to audit channel, set persisted to false in case
       log.persisted = false;
-      console.log(err);
+      console.error(err);
     }
     if (this._auditChannelName) this._postToAuditChannel(log, bot);
   }

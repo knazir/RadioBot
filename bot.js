@@ -144,13 +144,7 @@ bot.addCommand("spam", async message => {
     message.channel.bulkDelete(messagesToDelete);
   }
   const intervalId = setInterval(async () => {
-    if (count >= maxCount || !intervals.has(intervalId)) {
-      if (message.options.selfDestruct) {
-        const messagesToDelete = await message.channel.fetchMessages({ limit: count });
-        message.channel.bulkDelete(messagesToDelete);
-      }
-      return clearInterval(intervalId);
-    }
+    if (count >= maxCount || !intervals.has(intervalId)) return clearInterval(intervalId);
     message.channel.send(messageToSpam);
     count++;
   }, interval);

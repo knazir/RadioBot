@@ -151,8 +151,7 @@ bot.addCommand("spam", async message => {
   intervals.add(intervalId);
 }, {
   description: "Spam a message",
-  usage: "<message> --count=<number> --interval=<delay> --secret?",
-  requiresRole: bot.roles.musicTechnician
+  usage: "<message> --count=<number> --interval=<delay> --secret?"
 });
 
 bot.addCommand("clearSpamJobs", message => {

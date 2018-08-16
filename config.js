@@ -25,7 +25,7 @@ const config = {
   },
 
   SPAM_DEFAULT_INTERVAL: 250,
-  SPAM_DEFAULT_COUNT: 10
+  SPAM_DEFAULT_COUNT: 5
 };
 
 module.exports = config;
